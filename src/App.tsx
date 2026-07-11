@@ -886,12 +886,15 @@ export default function App() {
                     </div>
                   )}
 
-                  {/* Donate Button */}
+                   {/* Donate Button */}
                   <button
                     type="submit"
                     disabled={loadingAction !== "" && loadingAction !== "success" && loadingAction !== "error"}
-                    className="w-full cursor-pointer bg-gradient-to-r from-[#5B4FE8] to-[#37C6FF] hover:scale-[1.02] active:scale-[0.98] text-[#F4F6FF] font-bold py-3.5 px-6 rounded-2xl transition-all duration-200 shadow-lg shadow-[#5B4FE8]/25 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 font-display"
+                    className="w-full cursor-pointer bg-gradient-to-r from-[#5B4FE8] to-[#37C6FF] hover:scale-[1.02] active:scale-[0.98] text-[#F4F6FF] font-bold py-3.5 px-6 rounded-2xl transition-all duration-200 shadow-lg shadow-[#5B4FE8]/25 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2.5 font-display"
                   >
+                    {loadingAction !== "" && loadingAction !== "success" && loadingAction !== "error" && (
+                      <div className="w-4 h-4 rounded-full border-2 border-t-transparent border-[#FFC15E] animate-spin shrink-0" />
+                    )}
                     {!walletConnected
                       ? "Connect Wallet to Contribute"
                       : loadingAction === "preparing"
