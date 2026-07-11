@@ -236,6 +236,8 @@ We collected real feedback from our beta users. Here is the list of user respons
 
 Lumenova actively tracks its user growth using Plausible Analytics and on-chain interaction metrics. Below is the record of **87 unique wallets** that successfully performed transactions on the Stellar Testnet:
 
+📄 **Download Full CSV:** [user_growth_proof.csv](https://github.com/Abhishek86038/Lumenova-A5/blob/master/user_growth_proof.csv) — Contains all 83 on-chain donation records (Wallet Address, Action, Transaction Hash)
+
 <details>
 <summary>Click to view all 87 User Interactions</summary>
 
