@@ -47,10 +47,19 @@ export const OnboardingModal = () => {
 
           <div className="bg-[#0A0D1C] border border-slate-800 p-4 rounded-xl">
             <h4 className="font-bold text-[#FFC15E] mb-1">Getting Started:</h4>
-            <p>
-              You need the <a href="https://freighter.app/" target="_blank" className="text-[#37C6FF] underline">Freighter Wallet</a> to interact. 
-              Make sure you are connected to the <strong>Testnet</strong> and fund your account using the <a href="https://laboratory.stellar.org/#account-creator?network=test" target="_blank" className="text-[#37C6FF] underline">Friendbot</a>.
+            <p className="mb-3">
+              You need the <a href="https://freighter.app/" target="_blank" className="text-[#37C6FF] underline">Freighter Wallet</a> to interact. Make sure you are connected to the <strong>Testnet</strong>.
             </p>
+            <div className="flex gap-2.5">
+              <a
+                href="https://laboratory.stellar.org/#account-creator?network=test"
+                target="_blank"
+                rel="noreferrer"
+                className="flex-1 bg-gradient-to-r from-amber-600 to-amber-750 hover:from-amber-550 hover:to-amber-650 text-white text-center text-xs font-bold py-2.5 px-4 rounded-xl transition duration-200"
+              >
+                Fund Wallet (Friendbot Faucet) ↗
+              </a>
+            </div>
           </div>
         </div>
 
