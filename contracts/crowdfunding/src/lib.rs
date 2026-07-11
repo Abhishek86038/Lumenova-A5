@@ -126,6 +126,21 @@ impl CrowdfundingContract {
             );
 
             if tier > current_tier {
+                // Authorize the crowdfunding contract itself to call mint_badge
+                env.authorize_as_current_contract(soroban_sdk::vec![
+                    &env,
+                    soroban_sdk::auth::InvokerContractAuthEntry::Contract(
+                        soroban_sdk::auth::SubContractInvocation {
+                            context: soroban_sdk::auth::ContractContext {
+                                contract: badge_contract.clone(),
+                                fn_name: Symbol::new(&env, "mint_badge"),
+                                args: (donor.clone(), tier).into_val(&env),
+                            },
+                            sub_invocations: soroban_sdk::vec![&env],
+                        }
+                    )
+                ]);
+
                 let _: () = env.invoke_contract(
                     &badge_contract,
                     &Symbol::new(&env, "mint_badge"),
