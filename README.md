@@ -97,7 +97,7 @@ Stellar's fast transaction speeds and negligible fees make micro-donations and c
 ## 7. Smart Contracts
 
 ### Crowdfunding Escrow Contract
-**Deployed Contract ID:** `<CROWDFUNDING_ESCROW_CONTRACT_ID>`
+**Deployed Contract ID:** `CDBVWBQJO7CFTCJEDDKGYAWD42WGOY2BROJLH3TYZGXQVU2X7IAKKRAV`
 - `initialize(campaign_owner, goal_amount, token, badge_contract)`: Sets up the campaign.
 - `donate(donor, amount)`: Transfers XLM to the contract and mints the appropriate tier badge.
 - `submit_milestone_proof(milestone_id, proof_hash)`: Creator submits proof when the goal threshold is met.
@@ -106,7 +106,7 @@ Stellar's fast transaction speeds and negligible fees make micro-donations and c
 - `refund(donor, milestone_id)`: Refunds the donor their remaining unspent capital if a milestone fails.
 
 ### Rewards Badge Contract
-**Deployed Contract ID:** `CAAP5TGGZGLFXYGJY2H2O637FREG4EXE2PXI3A3Y4D6ST74QMI4YBD6C`
+**Deployed Contract ID:** `CCMKASIYDZ465AMTMRZGPTRYDZQZ63X2DIN2EYIP2R6N5K5AGPQYHXX4`
 - `initialize(admin, name, symbol)`: Sets up the soulbound token.
 - `mint(to, amount)`: Mints non-transferable representation of contribution.
 - `balance(id)`: Returns the badge balance/tier.
@@ -117,7 +117,7 @@ Stellar's fast transaction speeds and negligible fees make micro-donations and c
 
 - **Live Demo URL:** [Lumenova-A5 Live Website](https://lumenova-a5.vercel.app/)
 - **Demo Video Link:** [Watch the Video on YouTube](https://youtu.be/WZeQO9A-DmE)
-- **Sample Transaction Hash:** `<SAMPLE_TX_HASH>`
+- **Sample Transaction Hash:** `5eecc28798248654d713c30f0b9582726772f2b1e82cb0960e26669064f11390`
 
 ---
 
@@ -135,7 +135,7 @@ Stellar's fast transaction speeds and negligible fees make micro-donations and c
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone <REPO_URL>
+   git clone https://github.com/Abhishek86038/Lumenova-A5.git
    cd Lumenova-A5
    ```
 2. Install frontend dependencies:
