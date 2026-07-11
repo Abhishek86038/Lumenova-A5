@@ -1,481 +1,305 @@
-# 🌌 Lumenova-L3
+# 🌌 Lumenova-L4
 
 ### Trustless Crowdfunding and Milestone-Based Reward Badges on Stellar Soroban
-*A production-ready decentralized crowdfunding suite built for Level 3 (Orange Belt) of the Stellar Builder Challenge.*
+*A production-ready decentralized crowdfunding suite built for Level 4 (Green Belt) of the Stellar Builder Challenge.*
 
 [![CI/CD Pipeline](https://github.com/Abhishek86038/Lumenova3.1/actions/workflows/ci.yml/badge.svg)](https://github.com/Abhishek86038/Lumenova3.1/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ---
 
-## 📸 Screenshots & Gallery
+## 1. Title & Tagline
 
-### 1. Main Dashboard
-![Main Dashboard Preview](./screenshots/dashboard.png)
-*Visual representation of campaign goals, progress, and interactive slider.*
-
-### 2. Wallet Connection
-![Wallet Connection Popup](./screenshots/wallet-connected.png)
-*Freighter wallet integration connecting account and balance dynamically.*
-
-### 3. Badge Upgrade Success
-![On-chain Badge Minted](./screenshots/badge-upgrade.png)
-*Bronze, Silver, or Gold badge earned upon hitting contribution tiers.*
-
-### 4. Live Event Feed
-![Live Event Feed](./screenshots/event-feed.png)
-*Live event logs polled directly from Soroban RPC.*
-
-### 5. Mobile Responsive View
-![Mobile Responsive View](./screenshots/mobile-responsive.png)
-*Responsive glassmorphic UI optimized for mobile viewports.*
-
-### 6. Test Output
-![Test Suite Output](./screenshots/test-output.png)
-*Passing Vitest dashboard unit and integration test runs.*
-
-### 7. CI/CD Pipeline
-![CI/CD Pipeline Run](./screenshots/github-actions.png)
-*Successful GitHub Actions workflow run.*
+**Lumenova-L4: Escrow-Driven Crowdfunding on Stellar**
+*Don't just trust the creator—trust the smart contract. Milestone-gated funding secured by the community.*
 
 ---
 
-## 🔗 Project Links & Verification
+## 2. Overview
 
-- **Live Demo URL:** [Lumenova Web App | Live Demo](https://lumenova3-1.vercel.app/)
-- **Demo Video Walkthrough:** [YouTube Video | Demo Walkthrough](https://youtu.be/lX7_2AUlwvg)
-- **Stellar Expert Verification:**
-  - Crowdfunding Contract: [Stellar.Expert | `CDQ2DV6I7HIZYOALI4RZ42MTWKAFUODQWP4BH2GHMKP37Z5P7PB4OLTX`](https://stellar.expert/explorer/testnet/contract/CDQ2DV6I7HIZYOALI4RZ42MTWKAFUODQWP4BH2GHMKP37Z5P7PB4OLTX)
-  - Rewards Badge Contract: [Stellar.Expert | `CAAP5TGGZGLFXYGJY2H2O637FREG4EXE2PXI3A3Y4D6ST74QMI4YBD6C`](https://stellar.expert/explorer/testnet/contract/CAAP5TGGZGLFXYGJY2H2O637FREG4EXE2PXI3A3Y4D6ST74QMI4YBD6C)
-  - Verification Tx Hash: [Stellar.Expert | `4545935f8bb64de8cc5f3ef7e9e8f4955b252069eaee7c2a71d4bf74534a7873`](https://stellar.expert/explorer/testnet/tx/4545935f8bb64de8cc5f3ef7e9e8f4955b252069eaee7c2a71d4bf74534a7873)
+Lumenova-L4 evolves traditional crowdfunding into a fully decentralized, milestone-based Escrow system on the Stellar network using Soroban smart contracts. 
 
----
+In standard crowdfunding (like Kickstarter or GoFundMe), backers trust creators to deliver on their promises once fully funded. Often, this trust is broken, leading to delayed or abandoned projects and lost funds. Lumenova Escrow solves this:
+- Funds are **locked in a Soroban smart contract escrow** instead of being instantly released.
+- Projects are divided into **4 core milestones** (25%, 50%, 75%, 100%).
+- Creators must submit **cryptographic proof** of progress (e.g., IPFS hash or URL) to unlock the next tranche of funds.
+- Donors **vote** to approve or reject the submitted proof. Voting power is weighted by their cumulative donation amount.
+- If a milestone is approved, 25% of the funds are released. If rejected, donors can **claim a refund** for the remaining balance.
 
-## 🔍 Overview
-
-Lumenova-L3 is an advanced decentralized crowdfunding application built from scratch to showcase the power of the Stellar Soroban smart contract framework. Rather than acting as a simple utility, the application operates as an integrated ecosystem where backing a campaign immediately rewards supporters with persistent, upgradable on-chain badges that represent their status. This qualifies as a production-ready Level 3 (Orange Belt) submission by meeting the strict technical parameters of cross-contract invocation, real-time RPC event parsing, comprehensive unit/integration testing, standard linting, and modern glassmorphic design.
-
-When a donor contributes XLM to the crowdfunding campaign, the funds are immediately disbursed to the campaign creator on-chain via the native XLM token contract. Simultaneously, the Crowdfunding contract executes an inter-contract invocation to the Rewards Badge contract to inspect the user's cumulative contribution history and determine if they qualify for a badge upgrade. If the threshold is met, the Badge contract mints or upgrades their badge to the corresponding tier (Bronze, Silver, or Gold) directly in contract storage.
-
-To prevent dependency and build conflicts commonly associated with bundled Web3 wallet kits, Lumenova-L3 uses a clean integration of the raw `@stellar/freighter-api`. It fetches account details, queries balances via the Horizon server, and prompts user signatures in an isolated, secure manner. The frontend UI implements a double-refresh state sync pattern that refreshes data immediately upon transaction receipt and then polls again 2.5 seconds later, ensuring that RPC node indexing delays do not cause UI stutter.
+This creates a high-trust environment: creators get incremental funding to build, and donors maintain control over their unspent capital if the project goes off track. This project represents the evolution from the Level 1-3 baseline into a robust, production-ready MVP.
 
 ---
 
-## ⚙️ Architecture & Data Flow
+## 3. Problem Statement & Why Stellar
 
-The application executes cross-contract calls directly on-chain during donation:
+### The Problem
+Crowdfunding platforms suffer from a significant "trust deficit." Billions of dollars have been raised globally, but up to 9% of Kickstarter projects fail to deliver rewards, and even more deliver late or drastically under-scope. Donors bear 100% of the risk once the campaign goal is met.
 
-```
-[Donor (Freighter)]
-       |
-       |  1. Sign transaction (XDR)
-       v
-[Frontend App]
-       |
-       |  2. Submit transaction to Soroban RPC
-       v
-[Crowdfunding Contract] 
-       |
-       +-- 3. transfer(donor, campaign_owner, amount) -------> [Native XLM Contract]
-       |
-       +-- 4. get_badge_tier(donor) -------------------------> [Rewards Badge Contract]
-       |      (Returns current tier: 0, 1, 2, or 3)
-       |
-       +-- 5. mint_badge(donor, new_tier) [If upgradeable] --> [Rewards Badge Contract]
-       |      (Updates donor persistent storage)
-       |
-       v  6. Emit "donation_received" & "badge_minted" events
-[Soroban Event Indexer]
-       |
-       |  7. Poll & Parse Events
-       v
-[Frontend Dashboard Feed]
-```
+### The Solution
+A trustless escrow system where community consensus controls capital deployment.
 
-### Prose Explanation:
-1. **Initiation:** The donor inputs a donation amount in the frontend slider or input field. The frontend calls the Soroban RPC server to simulate resources, prepares the transaction, and prompts the user's Freighter extension to sign the transaction.
-2. **Execution:** Once signed, the envelope is submitted to the Soroban Testnet RPC. The Crowdfunding contract’s `donate` function is called.
-3. **Disbursement:** The Crowdfunding contract invokes the native token client to transfer the specified amount of stroops directly from the donor's balance to the campaign creator's address (immediate disbursement).
-4. **Validation:** The Crowdfunding contract retrieves the donor's cumulative contributions from its persistent storage. It evaluates the new total against the reward badge thresholds.
-5. **Cross-Contract Upgrade:** It invokes `get_badge_tier` on the Rewards Badge contract. If the new calculated tier exceeds their current tier, it invokes `mint_badge` on the Rewards Badge contract, which updates the donor's badge tier in persistent storage.
-6. **Events & Sync:** Both contracts publish events (`donation_received` and `badge_minted`). The frontend reads the success status, performs an immediate refresh of the user's balance and campaign totals, and schedules a second sync 2.5 seconds later to catch the indexed event log in the live feed.
+### Why Stellar?
+Stellar's fast transaction speeds and negligible fees make micro-donations and community voting economically viable. Soroban smart contracts allow us to write complex, secure escrow and weighted-voting logic natively in Rust without the high gas costs of other Layer-1 networks.
 
 ---
 
-## ✨ Features
+## 4. Architecture
 
-- **Freighter Wallet Connector:** Secure, popup-based user authorization via `requestAccess()`, with non-invasive address retrieval via `getAddress()` on page reload.
-- **Milestone Reward Badges:** Permanent on-chain status tracking (Bronze, Silver, Gold) written directly to the contract storage.
-- **Dynamic Slider Estimator:** A visual tier estimator allowing backers to slide values and preview their projected badge status before submitting XLM.
-- **Real-Time Event Logs:** Polling Soroban event topics directly from the ledger to populate a live updates dashboard of recent donations and badge mints.
-- **Glassmorphism UI:** Modern, visually stunning dark slate interface using smooth gradients, vibrant violet accents, responsive flexbox layout, and custom SVG icons.
-- **Automated CI/CD:** Continuous Integration verifying compiler safety, TypeScript type correctness, linting rules, and passing test suites on every branch push.
+### Frontend (React + Vite)
+- The user interface provides real-time interaction with the Stellar Testnet. 
+- It tracks wallet state (Freighter), parses on-chain data into human-readable milestones, and securely builds transactions for donations and voting.
+- Built using React, TailwindCSS, and `@stellar/freighter-api`.
 
----
+### Smart Contracts (Soroban/Rust)
+1. **Crowdfunding Escrow Contract (`crowdfunding`)**:
+   - Holds the XLM capital securely.
+   - Manages the `Milestone` structural state (tracking approval/rejection votes).
+   - Dynamically calculates vote weight based on donor history.
+2. **Rewards Badge Contract (`rewards_badge`)**:
+   - A secondary non-transferable token contract initialized alongside the campaign.
+   - Mints customized soulbound badges ("Spark", "Glow", "Supernova") dynamically based on the total cumulative donation tier.
 
-## 🛠️ Tech Stack
-
-### Frontend:
-- **Framework:** React (v19.2.7)
-- **Tooling:** Vite (v8.1.1)
-- **Styling:** Vanilla TailwindCSS (v4.3.2)
-- **Stellar Libraries:** `@stellar/stellar-sdk` (v16.0.1) & `@stellar/freighter-api` (v6.0.1)
-- **Testing:** Vitest (v4.1.9) & React Testing Library (v16.3.2)
-- **Linting:** Oxlint (v1.71.0)
-
-### Smart Contracts (Rust):
-- **Soroban SDK:** `soroban-sdk` resolver 2 (v20+)
-- **Workspace:** Cargo Monorepo with two independent crates (`contracts/crowdfunding`, `contracts/rewards_badge`)
+### Data Flow
+1. **Donor** deposits XLM -> `CrowdfundingContract` (held in Escrow) -> Donor receives minted `RewardBadge`.
+2. **Creator** submits proof -> `CrowdfundingContract` updates Milestone state to `ProofSubmitted`.
+3. **Donors** submit votes -> `CrowdfundingContract` tallies weighted votes.
+4. If approved -> Anyone triggers `release_milestone_funds` -> 25% XLM sent to Creator.
+5. If rejected -> Donors trigger `refund` -> Unspent proportional XLM returned to Donors.
 
 ---
 
-## 📜 Smart Contracts Details
+## 5. Features
 
-### 1. Crowdfunding Contract (`contracts/crowdfunding`)
-Manages the campaign goal, the total amount raised, and registers backer contribution histories. It triggers the badge upgrades.
-*   `initialize(env, owner, goal, token, badge_contract)`: Configures the campaign creator address, funding target in Stroops, native token contract address, and rewards badge contract address.
-*   `donate(env, donor, amount)`: Charges the donor, updates totals, checks if their cumulative total qualifies for an upgrade, calls the badge contract, and publishes the `donation_received` event.
-*   `get_total_raised(env)`: Simulates a read of the cumulative stroops donated.
-*   `get_goal(env)`: Simulates a read of the campaign target.
-
-### 2. Rewards Badge Contract (`contracts/rewards_badge`)
-A standalone registry of user badge achievements, acting as a decentralized identity badge.
-*   `initialize(env, admin)`: Configures the administrative authority (only the Crowdfunding contract is permitted to mint/upgrade badges).
-*   `mint_badge(env, donor, tier)`: Mints or upgrades the badge tier of the donor. Restricts execution to the authorized Crowdfunding contract.
-*   `get_badge_tier(env, donor)`: Returns the current badge tier (0 = None, 1 = Bronze, 2 = Silver, 3 = Gold).
-
-### 🎖️ On-chain Thresholds:
-- **Bronze Badge (Tier 1):** $\ge$ 50 XLM (500,000,000 Stroops)
-- **Silver Badge (Tier 2):** $\ge$ 200 XLM (2,000,000,000 Stroops)
-- **Gold Badge (Tier 3):** $\ge$ 500 XLM (5,000,000,000 Stroops)
+- **Milestone Dashboard**: Real-time visualization of 4 distinct project milestones (Locked, Reached, ProofSubmitted, Released, Rejected).
+- **Escrow Funding**: Secure native token lock-up that prevents creator rug-pulls.
+- **Weighted Community Voting**: Donors can approve or reject proofs, with votes weighted perfectly to their financial skin-in-the-game.
+- **Dynamic Refund Mechanism**: Automated withdrawal of unspent funds for rejected milestones.
+- **Real-Time On-chain Updates**: Live event feed tracking donations and milestone actions.
+- **Analytics & Monitoring**: Plausible Analytics integration for user interaction tracking and Sentry for error capturing.
+- **Onboarding & Feedback**: Interactive "How it Works" modal for new users and an integrated feedback widget for continuous improvement.
+- **Glassmorphic UI**: Premium, mobile-responsive, star-themed design tailored for the Stellar ecosystem.
 
 ---
 
-## 📋 Prerequisites
+## 6. Tech Stack
 
-- **Node.js:** Node version `>= 18.0.0` (v24.13.0 is used in the local environment).
-- **Rust & Cargo:** Required to build WASM contract binaries.
-- **Freighter Wallet:** Installed in the browser and configured to use the **Test Network**.
-- **Stellar Testnet Account:** Funded via [Friendbot](https://stellar.expert/explorer/testnet/friendbot) to pay for transactions.
+- **Smart Contracts**: Rust, Soroban SDK `v22.0.11`
+- **Frontend Framework**: React 19, TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS v4, Vanilla CSS
+- **Stellar Integration**: `@stellar/stellar-sdk` v16, `@stellar/freighter-api` v6
+- **Testing**: Cargo test (Rust), Vitest/JSDOM (Frontend)
+- **Monitoring/Analytics**: `@sentry/react`, Plausible Analytics (Mock wrappers integrated)
+- **Linting**: Oxlint
 
 ---
 
-## 🚀 Setup & Installation
+## 7. Smart Contracts
 
-### 1. Clone & Install Dependencies:
+### Crowdfunding Escrow Contract
+**Deployed Contract ID:** `<CROWDFUNDING_ESCROW_CONTRACT_ID>`
+- `initialize(campaign_owner, goal_amount, token, badge_contract)`: Sets up the campaign.
+- `donate(donor, amount)`: Transfers XLM to the contract and mints the appropriate tier badge.
+- `submit_milestone_proof(milestone_id, proof_hash)`: Creator submits proof when the goal threshold is met.
+- `vote_on_milestone(donor, milestone_id, approve)`: Casts a weighted vote.
+- `release_milestone_funds(milestone_id)`: Disburses 25% of the goal to the creator.
+- `refund(donor, milestone_id)`: Refunds the donor their remaining unspent capital if a milestone fails.
+
+### Rewards Badge Contract
+**Deployed Contract ID:** `CAAP5TGGZGLFXYGJY2H2O637FREG4EXE2PXI3A3Y4D6ST74QMI4YBD6C`
+- `initialize(admin, name, symbol)`: Sets up the soulbound token.
+- `mint(to, amount)`: Mints non-transferable representation of contribution.
+- `balance(id)`: Returns the badge balance/tier.
+
+---
+
+## 8. Live Demo & Video
+
+- **Live Demo URL:** `<LIVE_DEMO_URL>`
+- **Demo Video Link:** `<DEMO_VIDEO_URL>`
+- **Sample Transaction Hash:** `<SAMPLE_TX_HASH>`
+
+---
+
+## 9. Prerequisites & Setup & Installation
+
+### Prerequisites
+1. **Rust & Soroban CLI**:
+   ```bash
+   rustup target add wasm32-unknown-unknown
+   cargo install --locked stellar-cli --features opt
+   ```
+2. **Node.js**: v18+
+3. **Freighter Wallet**: Browser extension installed and connected to Stellar Testnet.
+
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone <REPO_URL>
+   cd Lumenova-A4
+   ```
+2. Install frontend dependencies:
+   ```bash
+   npm install
+   ```
+3. Build the smart contracts (optional, already compiled):
+   ```bash
+   cd contracts/crowdfunding
+   cargo build --target wasm32-unknown-unknown --release
+   ```
+4. Start the frontend:
+   ```bash
+   npm run dev
+   ```
+
+---
+
+## 10. How to Use
+
+1. **Connect Wallet:** Click "Connect Wallet" in the top right to link your Freighter wallet (Testnet).
+2. **Donate:** Use the Quick-Select (10, 50, 200, 500) or enter a custom amount to donate XLM. Sign the transaction in Freighter. Your funds are now in Escrow and you've minted a Reward Badge.
+3. **View Milestones:** Scroll down to the Milestone Dashboard. As funding hits 25%, 50%, etc., milestones will change from "Locked" to "Reached".
+4. **Submit Proof (Creator Only):** The campaign owner inputs an IPFS hash or URL into the "Submit Proof" field for a reached milestone.
+5. **Vote on Proof (Donors Only):** Once proof is submitted, donors click "Approve" or "Reject". 
+6. **Release Funds:** If the milestone is approved, click "Release Funds" to disburse the XLM to the creator.
+7. **Refund:** If the milestone is rejected, donors can click "Claim Refund" to recover their unspent contribution.
+
+---
+
+## 11. Running Tests
+
+### Smart Contract Tests (Rust)
+Validates the entire escrow workflow: donations, weighted voting math, successful releases, and proportional refunds.
 ```bash
-git clone https://github.com/Abhishek86038/Lumenova3.1.git
-cd Lumenova3.1
-npm install
+cd contracts/crowdfunding
+cargo test
 ```
 
-### 2. Run Local Development Server:
-```bash
-npm run dev
-```
-Open [http://localhost:5173](http://localhost:5173) in your browser.
-
-### 3. Run Static Code Linting:
-```bash
-npm run lint
-```
-
-### 4. Build Production Bundle:
-```bash
-npm run build
-```
-
----
-
-## 🎮 How to Use (Walkthrough)
-
-1.  **Install & Setup Wallet:** Open your Freighter wallet extension, switch the network setting to "Testnet", and fund your account using Friendbot.
-2.  **Connect Wallet:** Click the **Connect Wallet** button in the dashboard navigation bar. The Freighter extension will open a prompt asking you to authorize the application. Once approved, the navigation bar will show your shortened wallet address and your live XLM balance.
-3.  **Explore the Campaign:** Review the campaign details, goal progress percentage, and current total raised.
-4.  **Use the Slider Estimator:** Scroll down to the donation tiers card. Drag the slider from 0 to 600 XLM. The UI dynamically displays what level badge (Bronze, Silver, or Gold) your donation will unlock.
-5.  **Submit a Donation:** Enter an amount (e.g., `50` XLM) and click **Donate Now**. Freighter will prompt you with a transaction signature request. Review the contract operation details and click **Approve**.
-6.  **View Transaction Status:** The donation card shows status transitions (`Preparing`, `Signing`, `Submitting`, `Success`). Upon completion, a link to the transaction on **Stellar Expert** is displayed.
-7.  **Check Upgraded Status:** Your total contribution, updated XLM balance, and earned on-chain badge (with custom graphics) update automatically. The live feed updates to log the event.
-
----
-
-## 🧪 Running Tests
-
-### Frontend Tests (Vitest & RTL)
-Runs in JSDOM environment, validating components and core logic:
+### Frontend Tests (Vitest)
+Validates UI component rendering and utility math.
 ```bash
 npm run test
 ```
-The test suite validates:
-- Core dashboard elements, text details, and structural layouts.
-- Dynamic updates when changing input fields or sliding the tier estimator.
-- Correct connection/disconnection state transitions in navigation headers.
-
-### Smart Contract Tests (Rust Cargo)
-Runs isolated Rust test runners validating contract logic:
-```bash
-cargo test
-```
-The contract test cases validate:
-- Initial state values and deployment restrictions.
-- Immediate disbursement of funds to the owner upon donation.
-- Correct tier upgrades matching donor milestone boundaries.
-- Assertion checks ensuring non-owner addresses cannot call administration functions.
 
 ---
 
-## ⛓️ CI/CD Pipeline
+## 12. Analytics & Monitoring
 
-The project features a automated GitHub Actions workflow configured in `.github/workflows/ci.yml`. On every code push or pull request to the `master` branch, the workflow:
-1.  Spins up an `ubuntu-latest` virtual runner.
-2.  Checks out the codebase.
-3.  Sets up Node.js v20 environment and registers the `npm` cache.
-4.  Performs a clean install of dependencies using `npm ci`.
-5.  Runs `npm run lint` (using Oxlint) to verify code style and detect syntax warnings.
-6.  Runs the test suite using `npm run test` (Vitest).
-7.  Compiles production-ready frontend bundles using `npm run build` to guarantee deployment integrity.
+- **Analytics (Plausible):** Wrapped in `src/services/analytics.ts`. Tracks key metrics like `page_view`, `donate`, `submit_feedback`, `milestone_approve`, and `milestone_reject` to help optimize the funnel without invading user privacy.
+- **Monitoring (Sentry):** Wrapped in `src/services/monitoring.ts` and integrated via `ErrorBoundary.tsx`. Captures unhandled frontend exceptions and logs transaction preparation failures automatically to the Sentry dashboard for rapid debugging.
+- **Analytics Dashboard Link:** `<ANALYTICS_DASHBOARD_LINK>`
 
 ---
 
-## 📂 Project Structure
+## 13. User Onboarding & Feedback Summary
 
-```
-Lumenova3.1/
-├── .cargo/
-├── .github/
-│   └── workflows/
-│       └── ci.yml
+### Onboarding Flow
+First-time visitors are greeted with the `OnboardingModal` which succinctly explains the concept of "Escrow Smart Contracts" and "Milestone Voting". It guides them to install Freighter and use the Friendbot to obtain Testnet XLM.
+
+### Feedback Loop
+Users can click the persistent "Feedback" widget to leave a 1-5 star rating and comment, seamlessly tracked via our Analytics wrapper.
+
+**Feedback Summary from Beta Testing:**
+`<FEEDBACK_SUMMARY>`
+
+---
+
+## 14. Proof of Real User Interactions
+
+Below is a record of 10+ real Stellar Testnet addresses that successfully interacted with the escrow contracts during beta testing.
+
+| Wallet Address | Action | Date |
+| --- | --- | --- |
+| `<WALLET_ADDRESSES_LIST>` | - | - |
+
+---
+
+## 15. CI/CD Pipeline
+
+The repository utilizes GitHub Actions to ensure code quality and deployment reliability.
+- **On Push/PR:**
+  - Runs `cargo test` for Soroban smart contracts.
+  - Runs `oxlint` for frontend code quality.
+  - Runs `npm run build` to verify Vite compilation.
+  - Runs `npm run test` for frontend unit tests.
+
+---
+
+## 16. Screenshots
+
+### 1. Main Dashboard & Contribution UI
+> **Yahan aapka main homepage aur "Contribute Lumens" box ka screenshot aayega:**
+![Main Dashboard] ![alt text](image.png)  ![alt text](image-1.png)
+
+### 2. Live Milestone Dashboard
+> ![alt text](image-6.png)
+
+### 3. Mobile Responsive View
+> **Yahan apne app ka mobile screen (F12 > Device Toolbar) pe kaisa lagta hai uska screenshot add kiya hai:**
+![Mobile Dashboard View] ![alt text](image-2.png)
+
+### 4. Milestone Voting Flow & Wallet Popup
+> **Yahan Freighter wallet ka popup wala screenshot add karein jab koi Approve/Reject kar raha ho:**
+![Milestone Voting]![alt text](image-3.png)
+
+### 5. Onboarding Modal & Feedback Form
+> **Yahan naye "Welcome to Lumenova Escrow" popup aur Feedback widget ke screenshots daalein:**
+![Onboarding Modal]![alt text](image-4.png)
+![Feedback Form]![alt text](image-5.png)
+
+### 6. Sentry Error Monitoring & Analytics (Optional)
+> **Sentry and Plausible are configured via local mock wrappers. If you haven't set up online cloud accounts for them on sentry.io/plausible.io, you can keep this section without screenshots, showing clean implementation wrappers in `src/services/`.**
+
+---
+
+## 17. Project Structure
+
+```text
+Lumenova-A4/
 ├── contracts/
 │   ├── crowdfunding/
 │   │   ├── src/
-│   │   │   ├── lib.rs
-│   │   │   └── test.rs
+│   │   │   ├── lib.rs          # Escrow & Milestone logic
+│   │   │   └── test.rs         # Comprehensive Rust tests
 │   │   └── Cargo.toml
-│   └── rewards_badge/
-│       ├── src/
-│       │   ├── lib.rs
-│       │   └── test.rs
-│       └── Cargo.toml
-├── public/
-│   ├── icons.svg
-│   └── favicon.ico
+│   └── rewards_badge/          # Non-transferable Token contract
 ├── src/
-│   ├── App.test.tsx
-│   ├── App.tsx
-│   ├── index.css
-│   ├── main.tsx
-│   ├── stellar.ts
-│   └── vite-env.d.ts
-├── Cargo.lock
-├── Cargo.toml
-├── package-lock.json
+│   ├── components/
+│   │   ├── ErrorBoundary.tsx   # Sentry Integration
+│   │   ├── FeedbackForm.tsx    # User Feedback Widget
+│   │   ├── MilestoneDashboard.tsx # Escrow UI 
+│   │   └── OnboardingModal.tsx # How-It-Works modal
+│   ├── services/
+│   │   ├── analytics.ts        # Plausible wrapper
+│   │   └── monitoring.ts       # Sentry wrapper
+│   ├── App.tsx                 # Main application logic
+│   ├── stellar.ts              # Stellar RPC & Freighter integrations
+│   ├── main.tsx                # React entry point
+│   └── index.css               # Tailwind & Custom styling
 ├── package.json
-├── vite.config.ts
-└── tsconfig.json
+└── vite.config.ts
 ```
 
 ---
 
-## 🛡️ Error Handling Implemented
+## 18. Error Handling Implemented
 
-- **Freighter Detection Error:** Alerts users if the extension is disabled or not installed, directing them to the Freighter install page.
-- **Authorization Error:** Catches cases where the user closes the Freighter prompt without authorizing, resetting the connection button gracefully.
-- **Insufficient Funds Error:** Intercepts donation submission before blockchain execution if the entered XLM amount exceeds the wallet's current balance, presenting a warning message.
-- **Validation Errors:** Prevents submission of negative, zero, or non-numeric donation values.
-- **Freighter Rejection:** Catches user rejection errors during the transaction signing phase and returns the card state to idle without breaking the page.
-- **Transaction Submission / Polling Timeouts:** Handles blockchain congestion by tracking polling attempts and informing users if a transaction timed out on-chain.
+1. **Smart Contract Validations:** Strict checks (e.g., preventing voting on locked milestones, preventing creators from voting, double-spend prevention on refunds).
+2. **Frontend Error Boundaries:** React `ErrorBoundary` gracefully catches runtime crashes, logs to Sentry, and displays a user-friendly recovery UI instead of a blank white screen.
+3. **Transaction Simulation Parsing:** Soroban RPC simulations are carefully parsed. If simulation fails, human-readable error messages (e.g., "Insufficient balance", "Milestone not reached") are bubbled up to the user instead of cryptic XDR blobs.
+4. **Wallet State Handling:** Fallbacks for when Freighter is locked, not installed, or on the wrong network.
 
 ---
 
-## 🔮 Future Enhancements
+## 19. Known Limitations / Mainnet Roadmap
 
-- **Direct Token Options:** Allow donations in custom Stellar assets (like USDC or custom developer tokens) rather than only native XLM.
-- **Multi-Campaign Directory:** Support creation of multiple crowdfunding campaigns through a factory contract pattern.
-- **Decentralized NFT Badge Metadata:** Host SVG graphics and badge descriptions directly on IPFS/Arweave rather than rendering them locally based on contract tiers.
-
----
-
-## 📄 License
-
-```
-MIT License
-
-Copyright (c) 2026 Abhishek
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
+- **Smart Contract Audits:** The contract utilizes advanced map-based states for milestones which should undergo professional auditing before managing Mainnet funds.
+- **Oracle Integration:** Future versions should integrate decentralized oracles to automatically verify off-chain progress (e.g., GitHub commits, social media traction) rather than relying solely on creator-submitted URLs.
+- **Tiered Milestone Percentages:** Currently hardcoded to 25% tranches. Future versions will allow campaign creators to customize tranche sizes (e.g., 10%, 40%, 50%) during contract initialization.
+- **Governance Automation:** Implement automated delegation for users who do not wish to actively vote on every milestone.
 
 ---
 
-<!-- commit iteration 1 -->
-<!-- commit iteration 2 -->
-<!-- commit iteration 3 -->
-<!-- commit iteration 4 -->
-<!-- commit iteration 5 -->
-<!-- commit iteration 6 -->
-<!-- commit iteration 7 -->
-<!-- commit iteration 8 -->
-<!-- commit iteration 9 -->
-<!-- commit iteration 10 -->
-<!-- commit iteration 11 -->
-<!-- commit iteration 12 -->
-<!-- commit iteration 13 -->
-<!-- commit iteration 14 -->
-<!-- commit iteration 15 -->
-<!-- commit iteration 16 -->
-<!-- commit iteration 17 -->
-<!-- commit iteration 18 -->
-<!-- commit iteration 19 -->
-<!-- commit iteration 20 -->
-<!-- commit iteration 21 -->
-<!-- commit iteration 22 -->
-<!-- commit iteration 23 -->
-<!-- commit iteration 24 -->
-<!-- commit iteration 25 -->
-<!-- commit iteration 26 -->
-<!-- commit iteration 27 -->
-<!-- commit iteration 28 -->
-<!-- commit iteration 29 -->
-<!-- commit iteration 30 -->
-<!-- commit iteration 31 -->
-<!-- commit iteration 32 -->
-<!-- commit iteration 33 -->
-<!-- commit iteration 34 -->
-<!-- commit iteration 35 -->
-<!-- commit iteration 36 -->
-<!-- commit iteration 37 -->
-<!-- commit iteration 38 -->
-<!-- commit iteration 39 -->
-<!-- commit iteration 40 -->
-<!-- commit iteration 41 -->
-<!-- commit iteration 42 -->
-<!-- commit iteration 43 -->
-<!-- commit iteration 44 -->
-<!-- commit iteration 45 -->
-<!-- commit iteration 46 -->
-<!-- commit iteration 47 -->
-<!-- commit iteration 48 -->
-<!-- commit iteration 49 -->
-<!-- commit iteration 50 -->
-<!-- commit iteration 51 -->
-<!-- commit iteration 52 -->
-<!-- commit iteration 53 -->
-<!-- commit iteration 54 -->
-<!-- commit iteration 55 -->
-<!-- commit iteration 56 -->
-<!-- commit iteration 57 -->
-<!-- commit iteration 58 -->
-<!-- commit iteration 59 -->
-<!-- commit iteration 60 -->
-<!-- commit iteration 61 -->
-<!-- commit iteration 62 -->
-<!-- commit iteration 63 -->
-<!-- commit iteration 64 -->
-<!-- commit iteration 65 -->
-<!-- commit iteration 66 -->
-<!-- commit iteration 67 -->
-<!-- commit iteration 68 -->
-<!-- commit iteration 69 -->
-<!-- commit iteration 70 -->
-<!-- commit iteration 71 -->
-<!-- commit iteration 72 -->
-<!-- commit iteration 73 -->
-<!-- commit iteration 74 -->
-<!-- commit iteration 75 -->
-<!-- commit iteration 76 -->
-<!-- commit iteration 77 -->
-<!-- commit iteration 78 -->
-<!-- commit iteration 79 -->
-<!-- commit iteration 80 -->
-<!-- commit iteration 81 -->
-<!-- commit iteration 82 -->
-<!-- commit iteration 83 -->
-<!-- commit iteration 84 -->
-<!-- commit iteration 85 -->
-<!-- commit iteration 86 -->
-<!-- commit iteration 87 -->
-<!-- commit iteration 88 -->
-<!-- commit iteration 89 -->
-<!-- commit iteration 90 -->
-<!-- commit iteration 91 -->
-<!-- commit iteration 92 -->
-<!-- commit iteration 93 -->
-<!-- commit iteration 94 -->
-<!-- commit iteration 95 -->
-<!-- commit iteration 96 -->
-<!-- commit iteration 97 -->
-<!-- commit iteration 98 -->
-<!-- commit iteration 99 -->
-<!-- commit iteration 100 -->
-<!-- commit iteration 101 -->
-<!-- commit iteration 102 -->
-<!-- commit iteration 103 -->
-<!-- commit iteration 104 -->
-<!-- commit iteration 105 -->
-<!-- commit iteration 106 -->
-<!-- commit upgrade iteration 1 -->
-<!-- commit upgrade iteration 2 -->
-<!-- commit upgrade iteration 3 -->
-<!-- commit upgrade iteration 4 -->
-<!-- commit upgrade iteration 5 -->
-<!-- commit upgrade iteration 6 -->
-<!-- commit upgrade iteration 7 -->
-<!-- commit upgrade iteration 8 -->
-<!-- commit upgrade iteration 9 -->
-<!-- commit upgrade iteration 10 -->
-<!-- commit upgrade iteration 11 -->
-<!-- commit upgrade iteration 12 -->
-<!-- commit upgrade iteration 13 -->
-<!-- commit upgrade iteration 14 -->
-<!-- commit upgrade iteration 15 -->
-<!-- commit upgrade iteration 16 -->
-<!-- commit upgrade iteration 17 -->
-<!-- commit upgrade iteration 18 -->
-<!-- commit upgrade iteration 19 -->
-<!-- commit upgrade iteration 20 -->
-<!-- commit upgrade iteration 21 -->
-<!-- commit upgrade iteration 22 -->
-<!-- commit upgrade iteration 23 -->
-<!-- commit upgrade iteration 24 -->
-<!-- commit upgrade iteration 25 -->
-<!-- commit upgrade iteration 26 -->
-<!-- commit upgrade iteration 27 -->
-<!-- commit upgrade iteration 28 -->
-<!-- commit upgrade iteration 29 -->
-<!-- commit upgrade iteration 30 -->
-<!-- commit upgrade iteration 31 -->
-<!-- commit upgrade iteration 32 -->
-<!-- commit upgrade iteration 33 -->
-<!-- commit upgrade iteration 34 -->
-<!-- commit upgrade iteration 35 -->
-<!-- commit upgrade iteration 36 -->
-<!-- commit upgrade iteration 37 -->
-<!-- commit upgrade iteration 38 -->
-<!-- commit upgrade iteration 39 -->
-<!-- commit upgrade iteration 40 -->
-<!-- commit upgrade iteration 41 -->
-<!-- commit upgrade iteration 42 -->
-<!-- commit upgrade iteration 43 -->
-<!-- commit upgrade iteration 44 -->
-<!-- commit upgrade iteration 45 -->
-<!-- commit upgrade iteration 46 -->
-<!-- commit upgrade iteration 47 -->
-<!-- commit upgrade iteration 48 -->
-<!-- commit upgrade iteration 49 -->
-<!-- commit upgrade iteration 50 -->
+## 20. License
+
+This project is licensed under the [MIT License](LICENSE).

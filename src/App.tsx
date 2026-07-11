@@ -15,9 +15,14 @@ import {
   submitAndPollTransaction,
   getCampaignEvents,
   CROWDFUNDING_CONTRACT_ID,
-  REWARDS_BADGE_CONTRACT_ID
+  REWARDS_BADGE_CONTRACT_ID,
+  getMilestoneStatus
 } from "./stellar";
 import type { CampaignEvent } from "./stellar";
+import { MilestoneDashboard } from "./components/MilestoneDashboard";
+import { OnboardingModal } from "./components/OnboardingModal";
+import { FeedbackForm } from "./components/FeedbackForm";
+import { trackEvent } from "./services/analytics";
 
 export default function App() {
   // Wallet state
@@ -31,6 +36,7 @@ export default function App() {
   const [raised, setRaised] = useState<number>(0);
   const [events, setEvents] = useState<CampaignEvent[]>([]);
   const [currentLedger, setCurrentLedger] = useState<number>(0);
+  const [milestones, setMilestones] = useState<any[]>([]);
 
   // Shooting star animation state
   interface ShootingStar {
@@ -65,6 +71,14 @@ export default function App() {
 
       const ledger = await getCurrentLedger();
       if (ledger > 0) setCurrentLedger(ledger);
+
+      // Fetch milestones
+      const ms = [];
+      for (let i = 1; i <= 4; i++) {
+        const status = await getMilestoneStatus(i);
+        if (status) ms.push(status);
+      }
+      setMilestones(ms);
     } catch (e) {
       console.error("Error loading campaign data:", e);
     }
@@ -291,6 +305,7 @@ export default function App() {
       setSuccessTxHash(txHash);
       setLoadingAction("success");
       setDonateAmount("50");
+      trackEvent("donate", { amount: amountNum });
 
       await loadCampaignData();
       await loadUserData(userAddress);
@@ -357,6 +372,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#0A0D1C] text-[#F4F6FF] font-sans antialiased relative">
+      <OnboardingModal />
+      <FeedbackForm />
+      
       {/* Parallax Starfield */}
       <div className="starfield-container">
         <div className="star-layer star-layer-1" />
@@ -1106,6 +1124,16 @@ export default function App() {
               )}
             </div>
 
+          </div>
+
+          <div className="lg:col-span-12">
+            <MilestoneDashboard 
+              milestones={milestones}
+              userAddress={userAddress}
+              walletConnected={walletConnected}
+              reloadData={loadCampaignData}
+              goal={goal}
+            />
           </div>
 
         </div>

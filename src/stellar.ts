@@ -10,8 +10,8 @@ import {
   Account
 } from "@stellar/stellar-sdk";
 
-export const CROWDFUNDING_CONTRACT_ID = "CDQ2DV6I7HIZYOALI4RZ42MTWKAFUODQWP4BH2GHMKP37Z5P7PB4OLTX";
-export const REWARDS_BADGE_CONTRACT_ID = "CAAP5TGGZGLFXYGJY2H2O637FREG4EXE2PXI3A3Y4D6ST74QMI4YBD6C";
+export const CROWDFUNDING_CONTRACT_ID = "CAXLNNZDBJXQS4ZXUEYEA5P5HKCJPAQNZU4Z36EQ7XZ7OPJ4G3QNUE7B";
+export const REWARDS_BADGE_CONTRACT_ID = "CAUOIY32QH6TDFVJF73JUPSG4GLK4GG4UN6I6L4NPADL3VO6CKMUHXGV";
 export const XLM_NATIVE_CONTRACT_ID = "CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC";
 
 export const HORIZON_URL = "https://horizon-testnet.stellar.org";
@@ -268,4 +268,160 @@ export async function getCurrentLedger(): Promise<number> {
     console.error("Error getting current ledger:", err);
     return 0;
   }
+}
+
+/**
+ * Fetch the milestone status. Returns an array/object matching the Milestone struct.
+ */
+export async function getMilestoneStatus(milestoneId: number): Promise<any> {
+  try {
+    const contract = new Contract(CROWDFUNDING_CONTRACT_ID);
+    const response = await rpcServer.simulateTransaction(
+      new TransactionBuilder(
+        new Account("GAIQS24YAG7NRECNWIQ4ICTN2JTEYAQAWM75U3ZBUIKSI77E7RLPIPLK", "0"),
+        { fee: "100", networkPassphrase: Networks.TESTNET }
+      )
+        .addOperation(
+          contract.call(
+            "get_milestone_status",
+            nativeToScVal(milestoneId, { type: "u32" })
+          )
+        )
+        .setTimeout(30)
+        .build()
+    );
+
+    if (rpc.Api.isSimulationSuccess(response)) {
+      const resultVal = response.result?.retval;
+      if (resultVal) {
+        return scValToNative(resultVal);
+      }
+    }
+    return null;
+  } catch (error) {
+    console.error("Error fetching milestone status:", error);
+    return null;
+  }
+}
+
+/**
+ * Prepare proof submission transaction for Campaign Owner
+ */
+export async function prepareSubmitProofTransaction(
+  ownerPublicKey: string,
+  milestoneId: number,
+  proofHash: string
+): Promise<string> {
+  const account = await horizonServer.loadAccount(ownerPublicKey);
+
+  const tx = new TransactionBuilder(account, {
+    fee: "100000",
+    networkPassphrase: Networks.TESTNET,
+  })
+    .addOperation(
+      Operation.invokeContractFunction({
+        contract: CROWDFUNDING_CONTRACT_ID,
+        function: "submit_milestone_proof",
+        args: [
+          nativeToScVal(milestoneId, { type: "u32" }),
+          nativeToScVal(proofHash, { type: "string" }),
+        ],
+      })
+    )
+    .setTimeout(60)
+    .build();
+
+  const preparedTx = await rpcServer.prepareTransaction(tx);
+  return preparedTx.toEnvelope().toXDR("base64");
+}
+
+/**
+ * Prepare vote transaction for a donor
+ */
+export async function prepareVoteTransaction(
+  donorPublicKey: string,
+  milestoneId: number,
+  approve: boolean
+): Promise<string> {
+  const account = await horizonServer.loadAccount(donorPublicKey);
+
+  const tx = new TransactionBuilder(account, {
+    fee: "100000",
+    networkPassphrase: Networks.TESTNET,
+  })
+    .addOperation(
+      Operation.invokeContractFunction({
+        contract: CROWDFUNDING_CONTRACT_ID,
+        function: "vote_on_milestone",
+        args: [
+          nativeToScVal(donorPublicKey, { type: "address" }),
+          nativeToScVal(milestoneId, { type: "u32" }),
+          nativeToScVal(approve),
+        ],
+      })
+    )
+    .setTimeout(60)
+    .build();
+
+  const preparedTx = await rpcServer.prepareTransaction(tx);
+  return preparedTx.toEnvelope().toXDR("base64");
+}
+
+/**
+ * Prepare release funds transaction
+ */
+export async function prepareReleaseFundsTransaction(
+  callerPublicKey: string,
+  milestoneId: number
+): Promise<string> {
+  const account = await horizonServer.loadAccount(callerPublicKey);
+
+  const tx = new TransactionBuilder(account, {
+    fee: "100000",
+    networkPassphrase: Networks.TESTNET,
+  })
+    .addOperation(
+      Operation.invokeContractFunction({
+        contract: CROWDFUNDING_CONTRACT_ID,
+        function: "release_milestone_funds",
+        args: [
+          nativeToScVal(milestoneId, { type: "u32" }),
+        ],
+      })
+    )
+    .setTimeout(60)
+    .build();
+
+  const preparedTx = await rpcServer.prepareTransaction(tx);
+  return preparedTx.toEnvelope().toXDR("base64");
+}
+
+/**
+ * Prepare refund transaction for a donor if milestone is rejected
+ */
+export async function prepareRefundTransaction(
+  donorPublicKey: string,
+  milestoneId: number
+): Promise<string> {
+  const account = await horizonServer.loadAccount(donorPublicKey);
+
+  const tx = new TransactionBuilder(account, {
+    fee: "100000",
+    networkPassphrase: Networks.TESTNET,
+  })
+    .addOperation(
+      Operation.invokeContractFunction({
+        contract: CROWDFUNDING_CONTRACT_ID,
+        function: "refund",
+        args: [
+          nativeToScVal(donorPublicKey, { type: "address" }),
+          nativeToScVal(milestoneId, { type: "u32" }),
+        ],
+      })
+    )
+    .setTimeout(60)
+    .build();
+
+  const preparedTx = await rpcServer.prepareTransaction(tx);
+  return preparedTx.toEnvelope().toXDR("base64");
 }
