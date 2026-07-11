@@ -200,7 +200,20 @@ First-time visitors are greeted with the `OnboardingModal` which succinctly expl
 Users can click the persistent "Feedback" widget to leave a 1-5 star rating and comment, seamlessly tracked via our Analytics wrapper.
 
 **Feedback Summary from Beta Testing:**
-`<FEEDBACK_SUMMARY>`
+
+We collected real feedback from our beta users. Here is the list of user responses:
+
+| Name | Email | Wallet Address | Suggestion / Feedback |
+| --- | --- | --- | --- |
+| Suhani singh | suhanisingh7127@gmail.com | [GCXTLD...KSQUMP](https://stellar.expert/explorer/testnet/account/GCXTLDSQT6TBAGHQJL262C3LJ3D5I44QLCDK7QLTYZFAHAUET2KSQUMP) | Add a copy to clipboard button next to the wallet address and contract ID so users can easily copy them |
+| Sonali kumari | sonalikumari73664@gmail.com | [GAKY3B...GFNRZO](https://stellar.expert/explorer/testnet/account/GAKY3BODJOT624DGB3LGFIYCI4JDIXI725S5MOW7WGP4VLAPJPGFNRZO) | Add toast notifications that show a success message on every donate vote and wallet connect action |
+| Mohit sharma | mohitsh72788@gmail.com | [GBGCLC...XOEPAX](https://stellar.expert/explorer/testnet/account/GBGCLCI2Q62TUDALIEH46EE4VHBMDABHULP2CZWHBL2XKWA644XOEPAX) | Add a dark light mode toggle button so users can choose their preferred theme |
+| Saurabh Shukla | Shau76Shukla@gmail.com | [GDKYQW...N4NGYC](https://stellar.expert/explorer/testnet/account/GDKYQWOPBORJIT6GC6C2HBQ5CZ3MZP6Z4Q5RTW23LZ2XXZIZTLN4NGYC) | Turn the Friendbot link into a helper button that opens a new tab and makes getting testnet XLM easier |
+| Rohan Rai | rohan809raj@gmail.com | [GBASGI...4P5465](https://stellar.expert/explorer/testnet/account/GBASGIHKXN7QQEOJ3GOWDBEADTWBRE727L4TOW7V2KHUFFM7VV4P5465) | Add a scroll to top button that appears when the page is scrolled down and takes the user back up |
+| Rahul Trivedi | Rahultrivedi72004@gmail.com | [GAABAM...SE7Y4L](https://stellar.expert/explorer/testnet/account/GAABAMFRDAQ6I3P5NA2YQBLMQXDHXWIMBXGVJJ7CL5UPNTHY3DSE7Y4L) | Set a favicon and browser tab title with the Lumenova name and logo for a professional touch |
+| Nikhil Sharma | nikhikshar5638@gmail.com | [GBIGS5...JLMYSE](https://stellar.expert/explorer/testnet/account/GBIGS5ARWZDPCCSEIDVZCVZHYRD2PEJXVNNIKOWDAYOSBZ6JHDJLMYSE) | Add a share campaign button that copies the link or lets users share directly on WhatsApp or Twitter |
+| Bhumi Kumari | bhumikumari764353@gmail.com | [GBLRPI...RDBLUF](https://stellar.expert/explorer/testnet/account/GBLRPI5EABIWGWRKZXSUQCIZZLBD6HELN4GTBUBD7VSM5Q3E2BRDBLUF) | Add a small emoji or icon where it says No donations yet so the empty state looks visually better |
+
 
 ---
 
