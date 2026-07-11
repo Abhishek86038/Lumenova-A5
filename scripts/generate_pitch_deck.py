@@ -809,7 +809,7 @@ def create_deck():
 
     contacts = [
         ("GitHub Repository", "github.com/Abhishek86038/Lumenova-A5\n\n[ Check code and commits ]", ACCENT_CYAN),
-        ("Live Demonstration", "lumenova-a4.vercel.app\n\n[ Access on Testnet ]", ACCENT_GOLD),
+        ("Live Demonstration", "lumenova-a5.vercel.app\n\n[ Access on Testnet ]", ACCENT_GOLD),
         ("Developer Contact", "Abhishek / Team\n[ abhishek@example.com ]\n\n[ Say hello! ]", ACCENT_CYAN)
     ]
 

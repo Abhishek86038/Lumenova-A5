@@ -6,8 +6,6 @@
 [![CI/CD Pipeline](https://github.com/Abhishek86038/Lumenova3.1/actions/workflows/ci.yml/badge.svg)](https://github.com/Abhishek86038/Lumenova3.1/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-🎥 **Live Demo Video:** [Watch on YouTube](https://youtu.be/WZeQO9A-DmE)
-
 ---
 
 ## 1. Title & Tagline
@@ -117,8 +115,8 @@ Stellar's fast transaction speeds and negligible fees make micro-donations and c
 
 ## 8. Live Demo & Video
 
-- **Live Demo URL:** [Lumenova-A4 Live Website](https://lumenova-a4.vercel.app/)
-- **Demo Video Link:** [Watch the Video on YouTube](https://youtu.be/iOSuQ9mYY2o)
+- **Live Demo URL:** [Lumenova-A5 Live Website](https://lumenova-a5.vercel.app/)
+- **Demo Video Link:** [Watch the Video on YouTube](https://youtu.be/WZeQO9A-DmE)
 - **Sample Transaction Hash:** `<SAMPLE_TX_HASH>`
 
 ---
@@ -138,7 +136,7 @@ Stellar's fast transaction speeds and negligible fees make micro-donations and c
 1. Clone the repository:
    ```bash
    git clone <REPO_URL>
-   cd Lumenova-A4
+   cd Lumenova-A5
    ```
 2. Install frontend dependencies:
    ```bash
@@ -362,12 +360,12 @@ The repository utilizes GitHub Actions to ensure code quality and deployment rel
 
 Please add the following screenshots for Level 5 submission in the `./screenshots/` directory:
 
-- **Analytics Dashboard (50+ unique users/sessions):**
-  `![Analytics - 50+ Users](./screenshots/analytics-50-users.png)`
+- **Analytics Dashboard :**
+  ![alt text](image.png)
 - **Transaction Activity (Stellar Expert showing active volume across unique wallets):**
-  `![Transaction Activity](./screenshots/transaction-activity.png)`
+  ![alt text](image-1.png)
 - **Improved Onboarding Flow (New onboarding modal):**
-  `![Improved Onboarding Flow](./screenshots/improved-onboarding.png)`
+  ![alt text](image-2.png)
 
 ---
 
