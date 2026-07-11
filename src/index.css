@@ -185,3 +185,81 @@ h1, h2, h3, h4, .font-display {
 .supernova-effect {
   animation: supernova-burst 2.5s infinite ease-in-out;
 }
+
+/* Light Mode Overrides */
+.light-mode {
+  background-color: #F8FAFC !important;
+  color: #0F172A !important;
+}
+
+.light-mode nav {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border-color: #E2E8F0 !important;
+}
+
+.light-mode .bg-\[\#12162B\]\/60 {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: #E2E8F0 !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05) !important;
+}
+
+.light-mode .bg-\[\#0A0D1C\]\/90,
+.light-mode .bg-\[\#0A0D1C\]\/95,
+.light-mode .bg-\[\#0A0D1C\]\/80,
+.light-mode .bg-\[\#0A0D1C\]\/60,
+.light-mode .bg-\[\#0A0D1C\]\/70 {
+  background-color: #F1F5F9 !important;
+  border-color: #E2E8F0 !important;
+  color: #0F172A !important;
+}
+
+.light-mode input {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+  border-color: #CBD5E1 !important;
+}
+
+.light-mode input:focus {
+  border-color: #5B4FE8 !important;
+}
+
+.light-mode text, 
+.light-mode h1, 
+.light-mode h3, 
+.light-mode span, 
+.light-mode div:not(.bg-gradient-to-tr) {
+  color: #0F172A !important;
+}
+
+.light-mode .text-\[\#7E86A3\],
+.light-mode .text-slate-500,
+.light-mode .text-[#7E86A3] {
+  color: #475569 !important;
+}
+
+.light-mode .border-slate-800,
+.light-mode .border-slate-800\/80,
+.light-mode .border-slate-850,
+.light-mode .border-slate-850\/80,
+.light-mode .border-slate-900,
+.light-mode .border-slate-900\/60 {
+  border-color: #E2E8F0 !important;
+}
+
+.light-mode .starfield-container {
+  opacity: 0.1;
+  filter: invert(1);
+}
+
+.light-mode .custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(241, 245, 249, 0.5);
+}
+
+.light-mode .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.4);
+}
+
+.light-mode line[stroke="#1E2342"] {
+  stroke: #E2E8F0 !important;
+}
+

@@ -57,6 +57,7 @@ export default function App() {
 
   // UI States
   const [activeTab, setActiveTab] = useState<"all" | "donations" | "badges">("all");
+  const [lightMode, setLightMode] = useState(false);
 
   // Toast state
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" | "info" } | null>(null);
@@ -395,7 +396,7 @@ export default function App() {
   });
 
   return (
-    <div className="min-h-screen bg-[#0A0D1C] text-[#F4F6FF] font-sans antialiased relative">
+    <div className={`min-h-screen bg-[#0A0D1C] text-[#F4F6FF] font-sans antialiased relative transition-colors duration-300 ${lightMode ? 'light-mode bg-slate-50 text-slate-900' : ''}`}>
       <OnboardingModal />
       <FeedbackForm />
       
@@ -423,6 +424,24 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-4">
+            <button
+              onClick={() => {
+                setLightMode(!lightMode);
+                showToast(`Switched to ${!lightMode ? "Light" : "Dark"} Mode`, "info");
+              }}
+              className="p-2 rounded-full border border-slate-800 bg-[#0A0D1C]/80 hover:bg-[#12162B] text-slate-400 hover:text-slate-200 transition cursor-pointer"
+              title="Toggle Light/Dark Mode"
+            >
+              {lightMode ? (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+              )}
+            </button>
             {walletConnected ? (
               <div className="flex items-center gap-3 bg-[#0A0D1C]/90 border border-slate-800 rounded-full px-4 py-1.5 shadow-inner">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#4ADE80] animate-ping" />
