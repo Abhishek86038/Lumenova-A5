@@ -208,9 +208,18 @@ Users can click the persistent "Feedback" widget to leave a 1-5 star rating and 
 
 Below is a record of 10+ real Stellar Testnet addresses that successfully interacted with the escrow contracts during beta testing.
 
-| Wallet Address | Action | Date |
+| Wallet Address | Action | Transaction Hash |
 | --- | --- | --- |
-| `<WALLET_ADDRESSES_LIST>` | - | - |
+| [GCA77G7...ACRA74](https://stellar.expert/explorer/testnet/account/GCA77G7DO3KPV63T3OEK62I2FL5EI4CXODUPSGQTCNI7U2IFPTACRA74) | Donate (Campaign Escrow contribution) | [0d389be...cba3](https://stellar.expert/explorer/testnet/tx/0d389bef0e6a34ba758fac6aa6100a4397ef2d3931aac3d0f4d54f63c989cba3) |
+| [GCQ2SXK...E2DDL2](https://stellar.expert/explorer/testnet/account/GCQ2SXKHTRKCVX7CBN6FYFVDITS2T4FGB3OA5AWHBRM42WYRT5E2DDL2) | Donate (Campaign Escrow contribution) | [271e286...242d](https://stellar.expert/explorer/testnet/tx/271e286a8f517ac5f7a9cdd10d1d2b856156d762e75f279bea7c04b155f3242d) |
+| [GB4SSOE...H6JG5E](https://stellar.expert/explorer/testnet/account/GB4SSOEEOI3GWUOOEGQKCVSIEY4JANBSRR342CEXGMY2AVCTTSH6JG5E) | Donate (Campaign Escrow contribution) | [920a65b...56db](https://stellar.expert/explorer/testnet/tx/920a65b0e8f5bdbe7c88ab084186c9b8c3ae80b31e1cb3696e3ca6b01dde56db) |
+| [GCYCMMD...LZ3XVZ](https://stellar.expert/explorer/testnet/account/GCYCMMDHHYLGIIMDN7BQZHBW47EBACTPJHJLFRA4H2LLPA6CEPLZ3XVZ) | Donate (Campaign Escrow contribution) | [49dcb18...5cde](https://stellar.expert/explorer/testnet/tx/49dcb180ce1f501261f4be6d25e32c8eb89ed579c3fa0d13a35a705d4e535cde) |
+| [GAJY73N...GAT7S4](https://stellar.expert/explorer/testnet/account/GAJY73NMUWNBEW4NTD5U3SL6HK3HCDVQFSTKL2N5PCRK26CGUSGAT7S4) | Donate (Campaign Escrow contribution) | [447a927...2bd6](https://stellar.expert/explorer/testnet/tx/447a927f6dadac9cc52f8e83e1f9e399050206a2a559f5b59302cc814d5b2bd6) |
+| [GAWJB2F...VPVWG](https://stellar.expert/explorer/testnet/account/GAWJB2FVHXX56F2K6ZOX47SP42YPGJTM4C4HHLEP2ZBKMIF3OCCVPVWG) | Donate (Campaign Escrow contribution) | [a9b8a3f...0f8](https://stellar.expert/explorer/testnet/tx/a9b8a3f18863314bd491ee27ac21587e444f777fe468957cf9fa108b1b74a0f8) |
+| [GAYQ4MO...BINWL](https://stellar.expert/explorer/testnet/account/GAYQ4MOJPRPXMHIRLWU6KNS7EK67BBIKYWVO5QMCJWZ67JO3WMVBINWL) | Donate (Campaign Escrow contribution) | [1e4d96c...6101](https://stellar.expert/explorer/testnet/tx/1e4d96c9298fc6ab4026e2b59a0555d4f6dedb82f90c599009ecd55924fc6101) |
+| [GC24SKG...ENPJRP](https://stellar.expert/explorer/testnet/account/GC24SKGDV66ST63KDMZBJNFOTR63NVXN2GBLFLKYXECUKWZZ4TENPJRP) | Donate (Campaign Escrow contribution) | [e4bc145...41f3](https://stellar.expert/explorer/testnet/tx/e4bc14513b6e20a116919c8ab763cde35e051b55fc7ae85486ab42e6858341f3) |
+| [GDKEIJK...SNNJ4A](https://stellar.expert/explorer/testnet/account/GDKEIJKOFWCR4VZP3GVDUSKBI6SXHCGVXMR4YETJ54EB7BJ6RESNNJ4A) | Donate (Campaign Escrow contribution) | [546ab1f...4187](https://stellar.expert/explorer/testnet/tx/546ab1f117717502088b106c3aeae6452f1ec7d263e23aba31003cd9a6204187) |
+| [GCF7RYT...BSJLKX](https://stellar.expert/explorer/testnet/account/GCF7RYTV6OSWGZZKLE7TNS7JBUEFL4UVJJNKTJRRBQTBIL3MBSJLKXPB) | Donate (Campaign Escrow contribution) | [980301f...53e4](https://stellar.expert/explorer/testnet/tx/980301fa5c4758b580592e5435f6a5d565a55a90fca81a7b5d4f1a06c6af53e4) |
 
 ---
 
