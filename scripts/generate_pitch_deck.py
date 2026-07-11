@@ -800,16 +800,17 @@ def create_deck():
     p_cta_desc.alignment = PP_ALIGN.CENTER
     p_cta_desc.space_before = Pt(15)
 
-    # 3 contact cards
-    contact_w = Inches(3.4)
+    # 4 contact cards
+    contact_w = Inches(2.6)
     contact_h = Inches(2.2)
-    contact_g = Inches(0.5)
+    contact_g = Inches(0.3)
     contact_l = Inches(1.0)
     contact_t = Inches(4.0)
 
     contacts = [
         ("GitHub Repository", "github.com/Abhishek86038/Lumenova-A5\n\n[ Check code and commits ]", ACCENT_CYAN),
         ("Live Demonstration", "lumenova-a5.vercel.app\n\n[ Access on Testnet ]", ACCENT_GOLD),
+        ("Video Walkthrough", "youtu.be/WZeQO9A-DmE\n\n[ Watch Demo Video ]", ACCENT_GOLD),
         ("Developer Contact", "Abhishek / Team\n[ abhishek@example.com ]\n\n[ Say hello! ]", ACCENT_CYAN)
     ]
 
@@ -818,9 +819,9 @@ def create_deck():
         add_card(slide12, left, contact_t, contact_w, contact_h)
         
         # Header
-        add_text_box(slide12, left + Inches(0.15), contact_t + Inches(0.2), contact_w - Inches(0.3), Inches(0.4), title, 15, True, accent, PP_ALIGN.CENTER)
+        add_text_box(slide12, left + Inches(0.15), contact_t + Inches(0.2), contact_w - Inches(0.3), Inches(0.4), title, 14, True, accent, PP_ALIGN.CENTER)
         # Info
-        add_text_box(slide12, left + Inches(0.15), contact_t + Inches(0.7), contact_w - Inches(0.3), Inches(1.2), info, 12, False, TEXT_MUTED, PP_ALIGN.CENTER)
+        add_text_box(slide12, left + Inches(0.15), contact_t + Inches(0.7), contact_w - Inches(0.3), Inches(1.2), info, 11, False, TEXT_MUTED, PP_ALIGN.CENTER)
 
     prs.save("Lumenova_Pitch_Deck.pptx")
     print("Pitch deck successfully created: Lumenova_Pitch_Deck.pptx")
