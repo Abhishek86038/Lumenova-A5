@@ -80,6 +80,24 @@ export default function App() {
     showToast(`${label} copied to clipboard!`, "success");
   };
 
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   // Fetch campaign details and events
   const loadCampaignData = async () => {
     try {
@@ -1235,6 +1253,18 @@ export default function App() {
             <span className="font-semibold">{toast.message}</span>
           </div>
         </div>
+      )}
+      {/* Scroll To Top Button */}
+      {showScrollTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-5 right-5 z-55 p-3 rounded-full bg-gradient-to-tr from-[#5B4FE8] to-[#37C6FF] text-white hover:scale-110 transition cursor-pointer shadow-lg shadow-indigo-500/30"
+          title="Scroll to Top"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+          </svg>
+        </button>
       )}
     </div>
   );
