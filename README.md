@@ -115,8 +115,7 @@ Stellar's fast transaction speeds and negligible fees make micro-donations and c
 
 ## 8. Live Demo & Video
 
-- **Live Demo URL:** `<LIVE_DEMO_URL>`
-- **Demo Video Link:** `<DEMO_VIDEO_URL>`
+- **Demo Video Link:** [Watch the Video on YouTube](https://youtu.be/iOSuQ9mYY2o)
 - **Sample Transaction Hash:** `<SAMPLE_TX_HASH>`
 
 ---
