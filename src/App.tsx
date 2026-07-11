@@ -823,8 +823,9 @@ export default function App() {
                       );
                     })
                 ) : (
-                  <div className="text-center py-8 text-slate-600 text-xs font-semibold font-sans">
-                    No donations yet. Be the first to contribute!
+                  <div className="text-center py-8 text-slate-500 text-xs font-semibold font-sans flex flex-col items-center gap-2">
+                    <span className="text-xl animate-pulse">🌌</span>
+                    <span>No contributions yet. Be the first to illuminate this campaign!</span>
                   </div>
                 )}
               </div>
@@ -1222,10 +1223,9 @@ export default function App() {
                   }
                 })
               ) : (
-                <div className="text-center py-10 text-slate-600 text-xs font-medium font-sans">
-                  No recent events found.
-                  <br />
-                  Be the first to donate and start the stream!
+                <div className="text-center py-10 text-slate-500 text-xs font-semibold font-sans flex flex-col items-center gap-2">
+                  <span className="text-xl animate-pulse">📡</span>
+                  <span>No recent events found. Be the first to start the stream!</span>
                 </div>
               )}
             </div>
