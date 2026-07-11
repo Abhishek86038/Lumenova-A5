@@ -305,7 +305,17 @@ Lumenova actively tracks its user growth using Plausible Analytics and on-chain 
 
 ---
 
-## 15. CI/CD Pipeline
+## 15. User Data Collection & Excel Export
+
+To build a robust pipeline for future Mainnet launch and marketing, user details including Wallet Address, Email, Name, Rating, and Comments are actively collected via our in-app feedback widget powered by a Google Form integration.
+
+- **Google Form Link:** [Lumenova Feedback Form](https://docs.google.com/forms/d/e/1FAIpQLScvfle5MlnZAbLOeaP6W7vX33h0hTYXVwyyJQWPmuBhTgftqQ/viewform?pli=1&pli=1)
+- **Google Sheet Link (Exported Data):** [Lumenova Feedback Sheets Data](https://docs.google.com/spreadsheets/d/1ZDsFvUHNoKn2T-9BPVVMjSmlpU2ciXB8jStX7FzXY3Q/edit?usp=sharing)
+- *Note: Exported responses are also available as a CSV/XLSX (`user_growth_proof.csv`) in this repository for review.*
+
+---
+
+## 16. CI/CD Pipeline
 
 The repository utilizes GitHub Actions to ensure code quality and deployment reliability.
 - **On Push/PR:**
@@ -316,7 +326,7 @@ The repository utilizes GitHub Actions to ensure code quality and deployment rel
 
 ---
 
-## 16. Screenshots (Level 5)
+## 17. Screenshots (Level 5)
 
 Please add the following screenshots for Level 5 submission in the `./screenshots/` directory:
 
@@ -329,10 +339,10 @@ Please add the following screenshots for Level 5 submission in the `./screenshot
 
 ---
 
-## 17. Project Structure
+## 18. Project Structure
 
 ```text
-Lumenova-A4/
+Lumenova-A5/
 ├── contracts/
 │   ├── crowdfunding/
 │   │   ├── src/
@@ -359,7 +369,7 @@ Lumenova-A4/
 
 ---
 
-## 18. Error Handling Implemented
+## 19. Error Handling Implemented
 
 1. **Smart Contract Validations:** Strict checks (e.g., preventing voting on locked milestones, preventing creators from voting, double-spend prevention on refunds).
 2. **Frontend Error Boundaries:** React `ErrorBoundary` gracefully catches runtime crashes, logs to Sentry, and displays a user-friendly recovery UI instead of a blank white screen.
@@ -368,7 +378,7 @@ Lumenova-A4/
 
 ---
 
-## 19. Known Limitations / Mainnet Roadmap
+## 20. Known Limitations / Mainnet Roadmap
 
 - **Smart Contract Audits:** The contract utilizes advanced map-based states for milestones which should undergo professional auditing before managing Mainnet funds.
 - **Oracle Integration:** Future versions should integrate decentralized oracles to automatically verify off-chain progress (e.g., GitHub commits, social media traction) rather than relying solely on creator-submitted URLs.
@@ -377,6 +387,6 @@ Lumenova-A4/
 
 ---
 
-## 20. License
+## 21. License
 
 This project is licensed under the [MIT License](LICENSE).
