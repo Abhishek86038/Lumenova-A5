@@ -510,8 +510,19 @@ export default function App() {
             
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
               <div>
-                <h1 className="text-4xl font-black tracking-tight mb-2 font-display text-[#F4F6FF]">
+                <h1 className="text-4xl font-black tracking-tight mb-2 font-display text-[#F4F6FF] flex items-center gap-3">
                   Lumenova Crowdfunding
+                  <button
+                    onClick={() => {
+                      copyToClipboard(window.location.href, "Campaign Link");
+                    }}
+                    className="p-1.5 rounded-full border border-slate-805 bg-[#0A0D1C]/80 hover:bg-[#12162B] text-slate-400 hover:text-[#37C6FF] transition cursor-pointer shrink-0"
+                    title="Share Campaign"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 10.742l4.632-2.316m0 0a3 3 0 100-4.243 3 3 0 000 4.243zm0 4.243L8.684 14.26m0 0a3 3 0 100 4.243 3 3 0 000-4.243z" />
+                    </svg>
+                  </button>
                 </h1>
                 <p className="text-[#7E86A3] text-sm max-w-xl font-sans">
                   Support the development of Lumenova. Every contribution helps shape the future of Stellar and lights up the constellation grid.
