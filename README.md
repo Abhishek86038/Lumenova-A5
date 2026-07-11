@@ -6,6 +6,8 @@
 [![CI/CD Pipeline](https://github.com/Abhishek86038/Lumenova3.1/actions/workflows/ci.yml/badge.svg)](https://github.com/Abhishek86038/Lumenova3.1/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+🎥 **Live Demo Video:** [Watch on YouTube](https://youtu.be/WZeQO9A-DmE)
+
 ---
 
 ## 1. Title & Tagline
