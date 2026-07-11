@@ -58,6 +58,27 @@ export default function App() {
   // UI States
   const [activeTab, setActiveTab] = useState<"all" | "donations" | "badges">("all");
 
+  // Toast state
+  const [toast, setToast] = useState<{ message: string; type: "success" | "error" | "info" } | null>(null);
+
+  const showToast = (message: string, type: "success" | "error" | "info" = "success") => {
+    setToast({ message, type });
+  };
+
+  useEffect(() => {
+    if (toast) {
+      const timer = setTimeout(() => {
+        setToast(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [toast]);
+
+  const copyToClipboard = (text: string, label: string) => {
+    navigator.clipboard.writeText(text);
+    showToast(`${label} copied to clipboard!`, "success");
+  };
+
   // Fetch campaign details and events
   const loadCampaignData = async () => {
     try {
@@ -245,6 +266,7 @@ export default function App() {
         setUserAddress(keyResult.address);
         setWalletConnected(true);
         loadUserData(keyResult.address);
+        showToast("Wallet connected successfully!", "success");
       } else if (keyResult && keyResult.error) {
         alert(`Failed to retrieve address: ${keyResult.error}`);
       }
@@ -259,6 +281,7 @@ export default function App() {
     setWalletConnected(false);
     setUserBalance("0");
     setUserBadgeTier(0);
+    showToast("Wallet disconnected.", "info");
   };
 
   const handleDonate = async (e: React.FormEvent) => {
@@ -305,6 +328,7 @@ export default function App() {
       setSuccessTxHash(txHash);
       setLoadingAction("success");
       setDonateAmount("50");
+      showToast(`Donation of ${amountNum} XLM successful!`, "success");
       trackEvent("donate", { amount: amountNum });
 
       await loadCampaignData();
@@ -402,8 +426,17 @@ export default function App() {
             {walletConnected ? (
               <div className="flex items-center gap-3 bg-[#0A0D1C]/90 border border-slate-800 rounded-full px-4 py-1.5 shadow-inner">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#4ADE80] animate-ping" />
-                <span className="text-sm font-medium text-[#7E86A3] font-mono">
+                <span className="text-sm font-medium text-[#7E86A3] font-mono flex items-center gap-1.5">
                   {userAddress.slice(0, 6)}...{userAddress.slice(-6)}
+                  <button
+                    onClick={() => copyToClipboard(userAddress, "Wallet Address")}
+                    className="text-slate-500 hover:text-slate-300 p-0.5 rounded-md transition cursor-pointer"
+                    title="Copy Wallet Address"
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                    </svg>
+                  </button>
                 </span>
                 <button
                   onClick={handleDisconnectWallet}
@@ -449,14 +482,25 @@ export default function App() {
               </div>
               <div className="bg-[#0A0D1C]/90 border border-slate-800 rounded-2xl px-5 py-4 flex flex-col items-end shrink-0 shadow-inner">
                 <span className="text-xs text-[#7E86A3] font-semibold uppercase tracking-wider font-sans">Campaign ID</span>
-                <a
-                  href={`https://stellar.expert/explorer/testnet/contract/${CROWDFUNDING_CONTRACT_ID}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-xs text-[#FFC15E] hover:text-[#FFC15E]/80 font-mono transition mt-1 underline decoration-dashed"
-                >
-                  {CROWDFUNDING_CONTRACT_ID.slice(0, 10)}...{CROWDFUNDING_CONTRACT_ID.slice(-10)}
-                </a>
+                <div className="flex items-center gap-1.5 mt-1">
+                  <a
+                    href={`https://stellar.expert/explorer/testnet/contract/${CROWDFUNDING_CONTRACT_ID}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-xs text-[#FFC15E] hover:text-[#FFC15E]/80 font-mono transition underline decoration-dashed"
+                  >
+                    {CROWDFUNDING_CONTRACT_ID.slice(0, 10)}...{CROWDFUNDING_CONTRACT_ID.slice(-10)}
+                  </a>
+                  <button
+                    onClick={() => copyToClipboard(CROWDFUNDING_CONTRACT_ID, "Campaign ID")}
+                    className="text-slate-500 hover:text-slate-300 p-0.5 rounded-md transition cursor-pointer"
+                    title="Copy Campaign ID"
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -898,14 +942,25 @@ export default function App() {
               <div className="mt-5 pt-4 border-t border-slate-800/80 font-sans">
                 <div className="flex justify-between items-center">
                   <span className="text-xs text-[#7E86A3] font-semibold">Badge Contract</span>
-                  <a
-                    href={`https://stellar.expert/explorer/testnet/contract/${REWARDS_BADGE_CONTRACT_ID}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-xs text-[#37C6FF] hover:text-[#37C6FF]/80 font-mono transition underline"
-                  >
-                    {REWARDS_BADGE_CONTRACT_ID.slice(0, 6)}...{REWARDS_BADGE_CONTRACT_ID.slice(-6)}
-                  </a>
+                  <div className="flex items-center gap-1.5">
+                    <a
+                      href={`https://stellar.expert/explorer/testnet/contract/${REWARDS_BADGE_CONTRACT_ID}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-xs text-[#37C6FF] hover:text-[#37C6FF]/80 font-mono transition underline"
+                    >
+                      {REWARDS_BADGE_CONTRACT_ID.slice(0, 6)}...{REWARDS_BADGE_CONTRACT_ID.slice(-6)}
+                    </a>
+                    <button
+                      onClick={() => copyToClipboard(REWARDS_BADGE_CONTRACT_ID, "Badge Contract ID")}
+                      className="text-slate-500 hover:text-slate-300 p-0.5 rounded-md transition cursor-pointer"
+                      title="Copy Badge Contract ID"
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1147,6 +1202,21 @@ export default function App() {
           Crowdfunding: {CROWDFUNDING_CONTRACT_ID} | Rewards: {REWARDS_BADGE_CONTRACT_ID}
         </p>
       </footer>
+      {/* Toast Notification Container */}
+      {toast && (
+        <div className="fixed bottom-5 left-5 z-55 animate-fade-in-up">
+          <div className={`px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border text-sm font-sans ${
+            toast.type === "success" 
+              ? "bg-[#4ADE80]/15 border-[#4ADE80]/30 text-[#4ADE80]" 
+              : toast.type === "error"
+              ? "bg-[#FF6B6B]/15 border-[#FF6B6B]/30 text-[#FF6B6B]"
+              : "bg-[#37C6FF]/15 border-[#37C6FF]/30 text-[#37C6FF]"
+          }`}>
+            <span>{toast.type === "success" ? "✔" : toast.type === "error" ? "❌" : "ℹ"}</span>
+            <span className="font-semibold">{toast.message}</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
