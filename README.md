@@ -362,8 +362,7 @@ Please add the following screenshots for Level 5 submission in the `./screenshot
 
 - **Analytics Dashboard :**
   ![alt text](image.png)
-- **Transaction Activity (Stellar Expert showing active volume across unique wallets):**
-  ![alt text](image-1.png)
+  
 - **Improved Onboarding Flow (New onboarding modal):**
   ![alt text](image-2.png)
 
